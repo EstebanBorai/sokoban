@@ -1,6 +1,7 @@
 mod component;
 mod entity;
 mod game;
+mod system;
 
 use ggez::GameError;
 

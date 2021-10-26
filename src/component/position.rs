@@ -7,6 +7,12 @@ pub struct Position {
     pub z: u8,
 }
 
+impl Position {
+    pub fn new(x: u8, y: u8, z: u8) -> Self {
+        Position { x, y, z }
+    }
+}
+
 impl Component for Position {
     type Storage = VecStorage<Self>;
 }
