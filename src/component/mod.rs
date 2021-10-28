@@ -11,3 +11,14 @@ pub use player::*;
 pub use position::*;
 pub use renderable::*;
 pub use wall::*;
+
+use specs::{World, WorldExt};
+
+pub fn register_components(world: &mut World) {
+    world.register::<BoxItem>();
+    world.register::<BoxSpot>();
+    world.register::<Player>();
+    world.register::<Position>();
+    world.register::<Renderable>();
+    world.register::<Wall>();
+}
