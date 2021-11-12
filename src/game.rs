@@ -106,6 +106,6 @@ impl EventHandler<GameError> for Game {
 
     fn key_down_event(&mut self, _: &mut Context, keycode: KeyCode, _: KeyMods, _: bool) {
         let mut input_queue = self.world.write_resource::<InputQueue>();
-        input_queue.keys_pressed.push(keycode);
+        input_queue.push(keycode);
     }
 }

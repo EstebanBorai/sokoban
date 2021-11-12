@@ -1,6 +1,6 @@
 use specs::{Builder, World, WorldExt};
 
-use crate::component::{BoxItem, BoxSpot, Player, Position, Renderable, Wall};
+use crate::component::{BoxItem, BoxSpot, Immovable, Movable, Player, Position, Renderable, Wall};
 
 pub fn create_box_item(world: &mut World, position: Position) {
     world
@@ -8,6 +8,7 @@ pub fn create_box_item(world: &mut World, position: Position) {
         .with(Position { z: 10, ..position })
         .with(Renderable::new("/images/box_item.png"))
         .with(BoxItem {})
+        .with(Movable {})
         .build();
 }
 
@@ -34,6 +35,7 @@ pub fn create_player(world: &mut World, position: Position) {
         .with(Position { z: 10, ..position })
         .with(Renderable::new("/images/player.png"))
         .with(Player {})
+        .with(Movable {})
         .build();
 }
 
@@ -43,5 +45,6 @@ pub fn create_wall(world: &mut World, position: Position) {
         .with(Position { z: 10, ..position })
         .with(Renderable::new("/images/wall.png"))
         .with(Wall {})
+        .with(Immovable {})
         .build();
 }
