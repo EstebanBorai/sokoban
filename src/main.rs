@@ -1,6 +1,7 @@
 mod component;
 mod entity;
 mod game;
+mod map;
 mod resource;
 mod system;
 
