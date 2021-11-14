@@ -4,7 +4,7 @@ use specs::{Entities, Join, ReadStorage, System, Write, WriteStorage};
 use std::collections::HashMap;
 
 use crate::component::{Immovable, Movable, Player, Position};
-use crate::resource::InputQueue;
+use crate::resource::{Gameplay, InputQueue};
 
 const MAP_WIDTH: u8 = 8;
 const MAP_HEIGHT: u8 = 9;
@@ -20,6 +20,7 @@ impl InputSystem {
 impl<'a> System<'a> for InputSystem {
     type SystemData = (
         Write<'a, InputQueue>,
+        Write<'a, Gameplay>,
         Entities<'a>,
         WriteStorage<'a, Position>,
         ReadStorage<'a, Player>,
@@ -28,7 +29,8 @@ impl<'a> System<'a> for InputSystem {
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (mut input_queue, entities, mut positions, players, movables, immovables) = data;
+        let (mut input_queue, mut gameplay, entities, mut positions, players, movables, immovables) =
+            data;
         let mut to_move = Vec::new();
 
         for (position, _player) in (&positions, &players).join() {
@@ -75,6 +77,10 @@ impl<'a> System<'a> for InputSystem {
                     }
                 }
             }
+        }
+
+        if to_move.len() > 0 {
+            gameplay.moves += 1;
         }
 
         for (key, id) in to_move {

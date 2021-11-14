@@ -7,7 +7,7 @@ use std::path::PathBuf;
 use crate::component::register_components;
 use crate::map::load_map;
 use crate::resource::{register_resources, InputQueue};
-use crate::system::{InputSystem, RenderingSystem};
+use crate::system::{GameplaySystem, InputSystem, RenderingSystem};
 
 fn initialize_level(world: &mut World) {
     const MAP: &str = "
@@ -55,6 +55,11 @@ impl EventHandler<GameError> for Game {
         {
             let mut input_sys = InputSystem::new();
             input_sys.run_now(&self.world);
+        }
+
+        {
+            let mut gameplay_sys = GameplaySystem::new();
+            gameplay_sys.run_now(&self.world);
         }
 
         Ok(())
