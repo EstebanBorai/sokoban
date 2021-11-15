@@ -1,4 +1,4 @@
-use ggez::graphics::{clear, draw, present, Color, DrawParam, Image};
+use ggez::graphics::{Color, DrawParam, Drawable, FilterMode, Image, Text, clear, draw, draw, draw_queued_text, present, queue_text};
 use ggez::Context;
 use specs::{Join, ReadStorage, System};
 
@@ -13,6 +13,23 @@ pub struct RenderingSystem<'a> {
 impl<'a> RenderingSystem<'a> {
     pub fn new(context: &'a mut Context) -> Self {
         RenderingSystem { context }
+    }
+
+    pub fn draw_text(&mut self, message: &str, x: f32, y: f32) {
+        let text = Text::new(message);
+        let color = Color::new(0., 0., 0., 1.);
+        let dimensions = (0., 0.20);
+        let destination = (x, y);
+        let draw_param = DrawParam::new();
+
+        queue_text(self.context, &text, dimensions.into(), Some(color));
+        draw_queued_text(
+            self.context,
+                draw_param.dest([x, y]),
+            None,
+            FilterMode::Linear,
+            )
+        .expect("Failed to draw text");
     }
 }
 
