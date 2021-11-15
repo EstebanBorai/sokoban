@@ -1,8 +1,11 @@
-use ggez::graphics::{Color, DrawParam, Drawable, FilterMode, Image, Text, clear, draw, draw, draw_queued_text, present, queue_text};
+use ggez::graphics::{
+    clear, draw, draw_queued_text, present, queue_text, Color, DrawParam, FilterMode, Image, Text,
+};
 use ggez::Context;
-use specs::{Join, ReadStorage, System};
+use specs::{Join, Read, ReadStorage, System};
 
 use crate::component::{Position, Renderable};
+use crate::resource::Gameplay;
 
 const TILE_SIZE_FACTOR: f32 = 32.;
 
@@ -18,26 +21,29 @@ impl<'a> RenderingSystem<'a> {
     pub fn draw_text(&mut self, message: &str, x: f32, y: f32) {
         let text = Text::new(message);
         let color = Color::new(0., 0., 0., 1.);
-        let dimensions = (0., 0.20);
-        let destination = (x, y);
+        let dimensions: [f32; 2] = [0., 0.20];
         let draw_param = DrawParam::new();
 
-        queue_text(self.context, &text, dimensions.into(), Some(color));
+        queue_text::<[f32; 2]>(self.context, &text, dimensions, Some(color));
         draw_queued_text(
             self.context,
-                draw_param.dest([x, y]),
+            draw_param.dest([x, y]),
             None,
             FilterMode::Linear,
-            )
+        )
         .expect("Failed to draw text");
     }
 }
 
 impl<'a> System<'a> for RenderingSystem<'a> {
-    type SystemData = (ReadStorage<'a, Position>, ReadStorage<'a, Renderable>);
+    type SystemData = (
+        Read<'a, Gameplay>,
+        ReadStorage<'a, Position>,
+        ReadStorage<'a, Renderable>,
+    );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (positions, renderables) = data;
+        let (gameplay, positions, renderables) = data;
 
         // Clear the screen
         clear(self.context, Color::new(0.95, 0.95, 0.95, 1.));
@@ -63,6 +69,9 @@ impl<'a> System<'a> for RenderingSystem<'a> {
             // everything on the screen.
             draw(self.context, &image, draw_param.dest([x, y])).expect("Failed to render");
         }
+
+        self.draw_text(&gameplay.state.to_string(), 525., 80.);
+        self.draw_text(&gameplay.moves.to_string(), 525., 100.);
 
         present(self.context).expect("Failed to present");
     }
