@@ -39,7 +39,7 @@ impl Game {
 
         let context_builder = ContextBuilder::new("sokoban_remake_rust", "sokoban")
             .window_setup(WindowSetup::default().title("Sokoban"))
-            .window_mode(WindowMode::default().dimensions(800., 600.))
+            .window_mode(WindowMode::default().dimensions(600., 600.))
             .add_resource_path(PathBuf::from("./assets"));
 
         let (context, event_loop) = context_builder.build()?;

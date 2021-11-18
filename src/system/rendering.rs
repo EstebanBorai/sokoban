@@ -14,21 +14,23 @@ const TILE_SIZE_FACTOR: f32 = 32.;
 
 pub struct RenderingSystem<'a> {
     context: &'a mut Context,
+    font: Font,
 }
 
 impl<'a> RenderingSystem<'a> {
     pub fn new(context: &'a mut Context) -> Self {
-        RenderingSystem { context }
+        let font = Font::new(
+            context,
+            PathBuf::from_str("/PressStart2P-Regular.ttf").unwrap(),
+        )
+        .expect("Failed to find \"PressStart2P-Regular.ttf\" asset");
+
+        RenderingSystem { context, font }
     }
 
     pub fn draw_text(&mut self, message: &str, x: f32, y: f32) {
-        let font = Font::new(
-            self.context,
-            PathBuf::from_str("/PressStart2P-Regular.ttf").unwrap(),
-        )
-        .unwrap();
         let mut text = Text::new(message);
-        text.set_font(font, PxScale::from(24.));
+        text.set_font(self.font, PxScale::from(24.));
 
         let color = Color::WHITE;
         let dimensions: [f32; 2] = [0., 0.20];
@@ -80,8 +82,8 @@ impl<'a> System<'a> for RenderingSystem<'a> {
             draw(self.context, &image, draw_param.dest([x, y])).expect("Failed to render");
         }
 
-        self.draw_text(&gameplay.state.to_string(), 525., 80.);
-        self.draw_text(&gameplay.moves.to_string(), 525., 100.);
+        self.draw_text(&gameplay.state.to_string(), 400., 550.);
+        self.draw_text(&gameplay.moves.to_string(), 50., 550.);
 
         present(self.context).expect("Failed to present");
     }
