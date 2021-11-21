@@ -9,7 +9,7 @@ specs.
 # Screenshot
 
 <div align="center" style="display: block; text-align: center;">
-  <img src="./screenshot.png" height="120" width="120" />
+  <img src="./screenshot.png" height="400" width="400" />
 </div>
 
 # Usage
