@@ -1,12 +1,17 @@
-mod component;
-mod entity;
-mod game;
-mod map;
-mod resource;
-mod system;
+use macroquad::prelude::*;
 
-use ggez::GameError;
+fn conf() -> Conf {
+    Conf {
+        window_title: String::from("Sokoban"),
+        window_width: 512,
+        window_height: 512,
+        fullscreen: false,
+        window_resizable: false,
+        ..Default::default()
+    }
+}
 
-fn main() -> Result<(), GameError> {
-    game::Game::start()
+#[macroquad::main(conf)]
+async fn main() {
+    loop {}
 }
